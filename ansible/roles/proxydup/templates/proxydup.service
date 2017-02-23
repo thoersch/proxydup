@@ -1,0 +1,13 @@
+[Unit]
+Description=A Systemd job to start Proxydup
+
+[Service]
+Type=forking
+User={{ app_user }}
+WorkingDirectory={{ app_dir }}
+
+PIDFile={{ app_dir }}/proxydup.pid
+ExecStart=lein run >> {{log_file}}
+
+[Install]
+WantedBy=multi-user.target

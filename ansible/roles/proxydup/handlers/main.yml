@@ -1,0 +1,2 @@
+- name: restart proxydup
+  service: name=proxydup state=restarted

@@ -1,0 +1,4 @@
+app_dir: /opt/proxydup
+log_file: /var/log/proxydup.log
+deploy_name: deploy.tar.gz
+app_user: ubuntu

@@ -1,0 +1,33 @@
+- name: Compile
+  local_action: shell chdir=../../../proxydup lein compile
+  become: false
+
+- name: Create uber jar
+  local_action: shell chdir=../../../proxydup lein uberjar
+  become: false
+
+- name: Zip contents
+  local_action: shell chdir=../../../proxydup tar -zcvf ../{{ deploy_name}} ./
+  become: false
+
+- name: Create program directory
+  file: dest={{ app_dir }} state=directory group={{ app_user }} owner={{ app_user }} mode=0755
+
+- name: Copy and unarchive tar file
+  unarchive: src=../../{{ deploy_name}} dest={{ app_dir }}
+
+- name: Take ownership of proxydup files
+  file: dest={{ app_dir }} group={{ app_user }} owner={{ app_user }} recurse=true
+
+- name: Copy init script
+  template: src=proxydup.service dest=/lib/systemd/system/proxydup.service
+  notify:
+    - restart proxydup
+
+- name: Copy configuration file
+  template: src=config.edn dest={{ app_dir }}/resources/config.edn
+  notify:
+    - restart proxydup
+
+- name: Ensure proxydup is running
+  service: name=proxydup state=started

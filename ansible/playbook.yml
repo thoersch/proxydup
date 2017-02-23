@@ -1,0 +1,7 @@
+- name: Proxydup
+  hosts: {{ hosts }}
+  become: true
+  tags: proxydup
+  roles:
+    - lein
+    - proxydup
