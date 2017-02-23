@@ -1,0 +1,3 @@
+{
+    :proxies ["http://endpoint1" "http://endpoint2" "http://endpoint3"]
+}
